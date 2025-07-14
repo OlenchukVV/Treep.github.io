@@ -1,16 +1,9 @@
-// Элементы
+// Получаем элементы из DOM
 const splash = document.getElementById('splash');
 const loginScreen = document.getElementById('login');
 const main = document.getElementById('main');
 
 const splashLogo = document.getElementById('splash-logo');
-
-splashLogo.addEventListener('click', () => {
-  console.log('Нажали на T!');
-  splash.classList.remove('active');
-  loginScreen.classList.add('active');
-});
-
 
 const loginForm = document.getElementById('login-form');
 const nicknameInput = document.getElementById('nickname');
@@ -27,9 +20,16 @@ const logoutBtn = document.getElementById('logout-btn');
 const tabButtons = document.querySelectorAll('#top-buttons .tab-btn');
 const tabsWrapper = document.getElementById('tabs-wrapper');
 
-// Вход
+// Переход splash -> login
+splashLogo.addEventListener('click', () => {
+  splash.classList.remove('active');
+  loginScreen.classList.add('active');
+});
+
+// Вход пользователя
 loginForm.addEventListener('submit', (e) => {
-  e.preventDefault();
+  e.preventDefault(); // Остановка перезагрузки страницы
+
   errorMsg.textContent = '';
 
   const email = emailInput.value.trim();
@@ -37,16 +37,15 @@ loginForm.addEventListener('submit', (e) => {
 
   auth.signInWithEmailAndPassword(email, password)
     .then(() => {
-      loginScreen.classList.remove('active');
-      main.classList.add('active');
-      setActiveTab(0);
+      loginForm.reset();
+      // Не переключаем экран здесь, это сделает auth.onAuthStateChanged
     })
     .catch(error => {
       errorMsg.textContent = error.message;
     });
 });
 
-// Регистрация
+// Регистрация пользователя
 document.getElementById('register-btn').addEventListener('click', () => {
   errorMsg.textContent = '';
 
@@ -63,13 +62,14 @@ document.getElementById('register-btn').addEventListener('click', () => {
     .then((userCredential) => userCredential.user.updateProfile({ displayName: nickname }))
     .then(() => {
       errorMsg.textContent = 'Регистрация успешна! Теперь войдите.';
+      loginForm.reset();
     })
     .catch(error => {
       errorMsg.textContent = error.message;
     });
 });
 
-// Выход
+// Выход из аккаунта
 logoutBtn.addEventListener('click', () => {
   auth.signOut().then(() => {
     main.classList.remove('active');
@@ -115,17 +115,21 @@ function setActiveTab(index) {
   });
 }
 
-// Проверка состояния авторизации
+// Отслеживаем состояние авторизации
 auth.onAuthStateChanged(user => {
   if (user) {
+    // Пользователь авторизован — показываем главное меню
     splash.classList.remove('active');
     loginScreen.classList.remove('active');
     main.classList.add('active');
+
     profileInfo.textContent = `Ник: ${user.displayName || 'Без ника'}, Email: ${user.email}`;
   } else {
+    // Пользователь не авторизован — показываем splash
     splash.classList.add('active');
     loginScreen.classList.remove('active');
     main.classList.remove('active');
+
     profileInfo.textContent = 'Загрузка...';
   }
 });
