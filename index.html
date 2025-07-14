@@ -10,12 +10,12 @@
   <div id="app-container">
     <!-- Splash screen -->
     <div id="splash" class="screen active">
-      <div class="logo">T</div>
+      <div class="logo" tabindex="0">T</div>
     </div>
 
     <!-- Main menu -->
     <div id="menu" class="screen">
-      <div class="menu-scroll">
+      <div class="menu-scroll" id="menu-scroll">
         <section class="menu-page" id="profile">
           <h1>Профиль</h1>
           <p>Здесь будет профиль пользователя.</p>
@@ -28,6 +28,13 @@
           <h1>Группы</h1>
           <p>Здесь будут групповые чаты.</p>
         </section>
+      </div>
+
+      <!-- Навигация -->
+      <div id="nav-buttons">
+        <button class="nav-btn active" data-index="0" aria-label="Профиль"></button>
+        <button class="nav-btn" data-index="1" aria-label="Чаты"></button>
+        <button class="nav-btn" data-index="2" aria-label="Группы"></button>
       </div>
     </div>
   </div>
