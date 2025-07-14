@@ -1,20 +1,30 @@
 // Элементы
-const loginScreen = document.getElementById('login');
 const splash = document.getElementById('splash');
+const loginScreen = document.getElementById('login');
 const main = document.getElementById('main');
+
+const logo = splash.querySelector('.logo');
 
 const loginForm = document.getElementById('login-form');
 const nicknameInput = document.getElementById('nickname');
 const emailInput = document.getElementById('email');
 const passwordInput = document.getElementById('password');
-
 const errorMsg = document.getElementById('error-msg');
+
 const profileInfo = document.getElementById('profile-info');
+const newNicknameInput = document.getElementById('new-nickname');
+const changeNicknameBtn = document.getElementById('change-nickname-btn');
+const profileMessage = document.getElementById('profile-message');
 const logoutBtn = document.getElementById('logout-btn');
 
-const logo = splash.querySelector('.logo');
 const tabButtons = document.querySelectorAll('#top-buttons .tab-btn');
 const tabsWrapper = document.getElementById('tabs-wrapper');
+
+// Переход splash -> login
+logo.addEventListener('click', () => {
+  splash.classList.remove('active');
+  loginScreen.classList.add('active');
+});
 
 // Вход
 loginForm.addEventListener('submit', (e) => {
@@ -27,7 +37,8 @@ loginForm.addEventListener('submit', (e) => {
   auth.signInWithEmailAndPassword(email, password)
     .then(() => {
       loginScreen.classList.remove('active');
-      splash.classList.add('active');
+      main.classList.add('active');
+      setActiveTab(0);
     })
     .catch(error => {
       errorMsg.textContent = error.message;
@@ -48,12 +59,7 @@ document.getElementById('register-btn').addEventListener('click', () => {
   }
 
   auth.createUserWithEmailAndPassword(email, password)
-    .then((userCredential) => {
-      // Сохраним ник в профиле
-      return userCredential.user.updateProfile({
-        displayName: nickname
-      });
-    })
+    .then((userCredential) => userCredential.user.updateProfile({ displayName: nickname }))
     .then(() => {
       errorMsg.textContent = 'Регистрация успешна! Теперь войдите.';
     })
@@ -66,15 +72,32 @@ document.getElementById('register-btn').addEventListener('click', () => {
 logoutBtn.addEventListener('click', () => {
   auth.signOut().then(() => {
     main.classList.remove('active');
-    loginScreen.classList.add('active');
+    splash.classList.add('active');
   });
 });
 
-// Переход splash -> меню
-logo.addEventListener('click', () => {
-  splash.classList.remove('active');
-  main.classList.add('active');
-  setActiveTab(0);
+// Смена ника
+changeNicknameBtn.addEventListener('click', () => {
+  profileMessage.textContent = '';
+  const newNick = newNicknameInput.value.trim();
+
+  if (!newNick) {
+    profileMessage.textContent = 'Введите новый ник!';
+    return;
+  }
+
+  const user = auth.currentUser;
+  if (user) {
+    user.updateProfile({ displayName: newNick })
+      .then(() => {
+        profileMessage.textContent = 'Ник успешно обновлён!';
+        profileInfo.textContent = `Ник: ${user.displayName || 'Без ника'}, Email: ${user.email}`;
+        newNicknameInput.value = '';
+      })
+      .catch((error) => {
+        profileMessage.textContent = 'Ошибка: ' + error.message;
+      });
+  }
 });
 
 // Навигация по вкладкам
@@ -94,12 +117,13 @@ function setActiveTab(index) {
 // Проверка состояния авторизации
 auth.onAuthStateChanged(user => {
   if (user) {
+    splash.classList.remove('active');
     loginScreen.classList.remove('active');
-    splash.classList.add('active');
+    main.classList.add('active');
     profileInfo.textContent = `Ник: ${user.displayName || 'Без ника'}, Email: ${user.email}`;
   } else {
-    loginScreen.classList.add('active');
-    splash.classList.remove('active');
+    splash.classList.add('active');
+    loginScreen.classList.remove('active');
     main.classList.remove('active');
     profileInfo.textContent = 'Загрузка...';
   }
