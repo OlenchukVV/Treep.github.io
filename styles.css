@@ -126,3 +126,13 @@ body, html {
   overflow-y: auto;
   height: 100%;
 }
+#users-list div:hover {
+  background-color: #555;
+}
+
+#chat-window {
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 60px);
+}
+
