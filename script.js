@@ -27,12 +27,6 @@ const logoutBtn = document.getElementById('logout-btn');
 const tabButtons = document.querySelectorAll('#top-buttons .tab-btn');
 const tabsWrapper = document.getElementById('tabs-wrapper');
 
-// Переход splash -> login
-logo.addEventListener('click', () => {
-  splash.classList.remove('active');
-  loginScreen.classList.add('active');
-});
-
 // Вход
 loginForm.addEventListener('submit', (e) => {
   e.preventDefault();
