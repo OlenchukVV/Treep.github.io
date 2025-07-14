@@ -182,3 +182,47 @@ body, html {
 #code-input-section button:hover {
   background-color: #777;
 }
+#login-form input {
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  border: none;
+  background-color: #333;
+  color: #eee;
+  font-size: 16px;
+  outline: none;
+}
+
+#login-form input:focus {
+  background-color: #444;
+}
+
+#auth-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+#auth-buttons button {
+  flex: 1;
+  padding: 12px 20px;
+  border-radius: 30px;
+  border: none;
+  background-color: #555;
+  color: #eee;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#auth-buttons button:hover {
+  background-color: #777;
+}
+
+.error {
+  color: #f88;
+  margin-top: 10px;
+  text-align: center;
+}
+
