@@ -12,13 +12,13 @@ body, html {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   overflow: hidden;
   display: flex;
-  justify-content: center; /* Центрируем содержимое по горизонтали */
+  justify-content: center;
   align-items: center;
 }
 
-/* Контейнер с фиксированной шириной для мобилы */
+/* Контейнер для мобилы */
 #app-container {
-  width: 375px; /* классическая ширина телефона */
+  width: 375px;
   height: 100vh;
   box-shadow: 0 0 10px #222;
   border-radius: 12px;
@@ -28,7 +28,7 @@ body, html {
   background-color: #1e1e1e;
 }
 
-/* Скрываем всё, если ширина экрана больше 420px */
+/* Сообщение на ПК */
 @media (min-width: 421px) {
   body::before {
     content: "Пожалуйста, откройте Treep на мобильном телефоне";
@@ -70,30 +70,45 @@ body, html {
   padding: 0 20px;
 }
 
-#splash .logo:active {
+#splash .logo:active,
+#splash .logo:focus {
   color: #bbb;
+  outline: none;
 }
 
 /* Главное меню */
 #menu {
   flex-direction: column;
-  overflow-y: scroll;
-  scroll-snap-type: y mandatory;
-  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
+/* Горизонтальный скролл */
 .menu-scroll {
-  height: 100vh;
+  height: calc(100% - 60px); /* учёт навигации */
   width: 100%;
-  scroll-snap-type: y mandatory;
-  overflow-y: scroll;
+  display: flex;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  scroll-snap-points-x: repeat(100%);
+  scroll-padding-left: 0;
+  scroll-padding-right: 0;
 }
 
+/* Каждый экран занимает всю ширину */
 .menu-page {
-  height: 100vh;
-  padding: 40px 20px;
+  flex: 0 0 100%;
+  height: 100%;
+  padding: 40px 20px 20px;
   scroll-snap-align: start;
-  border-bottom: 1px solid #333;
+  border-right: 1px solid #333;
+  box-sizing: border-box;
+  overflow-y: auto;
 }
 
 .menu-page h1 {
@@ -105,4 +120,36 @@ body, html {
 .menu-page p {
   font-size: 18px;
   color: #aaa;
+  line-height: 1.4;
+}
+
+/* Навигация снизу */
+#nav-buttons {
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #222;
+  border-top: 1px solid #333;
+  gap: 20px;
+  user-select: none;
+}
+
+/* Кнопки-навигации - круглые точки */
+.nav-btn {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #555;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.nav-btn.active {
+  background: #bbb;
+}
+
+.nav-btn:focus {
+  outline: 2px solid #888;
 }
