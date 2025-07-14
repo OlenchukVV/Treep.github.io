@@ -5,11 +5,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>Treep — Твой тёмный друг</title>
   <link rel="stylesheet" href="styles.css" />
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 </head>
 <body>
   <div id="app-container">
+
+    <!-- Login screen -->
+    <div id="login" class="screen active">
+      <h1>Авторизация по номеру телефона</h1>
+
+      <!-- Форма ввода номера -->
+      <div id="phone-input-section">
+        <input type="tel" id="phone-number" placeholder="+7 900 000-00-00" autocomplete="tel" />
+        <button id="send-code-btn">Отправить код</button>
+      </div>
+
+      <!-- Форма ввода кода -->
+      <div id="code-input-section" style="display:none;">
+        <input type="text" id="verification-code" placeholder="Введите код из SMS" maxlength="6" />
+        <button id="verify-code-btn">Подтвердить код</button>
+      </div>
+
+      <p id="error-msg" class="error"></p>
+
+      <!-- reCAPTCHA контейнер -->
+      <div id="recaptcha-container"></div>
+    </div>
+
     <!-- Splash screen -->
-    <div id="splash" class="screen active">
+    <div id="splash" class="screen">
       <div class="logo" tabindex="0">T</div>
     </div>
 
@@ -24,7 +50,8 @@
       <div id="tabs-wrapper">
         <section class="tab" id="profile">
           <h1>Профиль</h1>
-          <p>Здесь будет профиль пользователя.</p>
+          <p id="profile-info">Загрузка...</p>
+          <button id="logout-btn">Выйти</button>
         </section>
 
         <section class="tab" id="chats">
@@ -40,6 +67,8 @@
     </div>
   </div>
 
+  <!-- Скрипты -->
+  <script src="firebase.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
