@@ -13,28 +13,29 @@
       <div class="logo" tabindex="0">T</div>
     </div>
 
-    <!-- Main menu -->
-    <div id="menu" class="screen">
-      <div class="menu-scroll" id="menu-scroll">
-        <section class="menu-page" id="profile">
+    <!-- Main content -->
+    <div id="main" class="screen">
+      <div id="top-buttons">
+        <button class="tab-btn active" data-index="0">Профиль</button>
+        <button class="tab-btn" data-index="1">Чаты</button>
+        <button class="tab-btn" data-index="2">Группы</button>
+      </div>
+
+      <div id="tabs-wrapper">
+        <section class="tab" id="profile">
           <h1>Профиль</h1>
           <p>Здесь будет профиль пользователя.</p>
         </section>
-        <section class="menu-page" id="chats">
+
+        <section class="tab" id="chats">
           <h1>Чаты</h1>
           <p>Здесь будут ваши сообщения.</p>
         </section>
-        <section class="menu-page" id="groups">
+
+        <section class="tab" id="groups">
           <h1>Группы</h1>
           <p>Здесь будут групповые чаты.</p>
         </section>
-      </div>
-
-      <!-- Навигация -->
-      <div id="nav-buttons">
-        <button class="nav-btn active" data-index="0" aria-label="Профиль"></button>
-        <button class="nav-btn" data-index="1" aria-label="Чаты"></button>
-        <button class="nav-btn" data-index="2" aria-label="Группы"></button>
       </div>
     </div>
   </div>
