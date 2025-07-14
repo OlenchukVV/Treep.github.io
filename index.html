@@ -2,8 +2,8 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-  <title>Treep — Твой мухоморный друг</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
+  <title>Treep — Тёмный мессенджер</title>
   <link rel="stylesheet" href="styles.css" />
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
@@ -11,8 +11,13 @@
 <body>
   <div id="app-container">
 
+    <!-- Splash screen -->
+    <div id="splash" class="screen active">
+      <div class="logo" tabindex="0">T</div>
+    </div>
+
     <!-- Login/Register screen -->
-    <div id="login" class="screen active">
+    <div id="login" class="screen">
       <h1>Вход / Регистрация в Treep</h1>
       
       <form id="login-form">
@@ -29,11 +34,6 @@
       <p id="error-msg" class="error"></p>
     </div>
 
-    <!-- Splash screen -->
-    <div id="splash" class="screen">
-      <div class="logo" tabindex="0">T</div>
-    </div>
-
     <!-- Main content -->
     <div id="main" class="screen">
       <div id="top-buttons">
@@ -46,7 +46,14 @@
         <section class="tab" id="profile">
           <h1>Профиль</h1>
           <p id="profile-info">Загрузка...</p>
+
+          <div id="nickname-change">
+            <input type="text" id="new-nickname" placeholder="Новый ник" />
+            <button id="change-nickname-btn">Сменить ник</button>
+          </div>
+
           <button id="logout-btn">Выйти</button>
+          <p id="profile-message" class="info"></p>
         </section>
 
         <section class="tab" id="chats">
@@ -60,6 +67,7 @@
         </section>
       </div>
     </div>
+
   </div>
 
   <script src="firebase.js"></script>
