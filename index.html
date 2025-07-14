@@ -8,6 +8,8 @@
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
 </head>
 <body>
   <div id="app-container">
@@ -59,8 +61,11 @@
 
         <section class="tab" id="chats">
           <h1>Чаты</h1>
-          <p>Здесь будут ваши сообщения.</p>
+          <!-- Здесь будет список пользователей -->
+          <div id="users-list" style="overflow-y:auto; max-height:300px; border: 1px solid #444; border-radius: 8px; padding: 10px;">
+          </div>
         </section>
+
 
         <section class="tab" id="groups">
           <h1>Группы</h1>
