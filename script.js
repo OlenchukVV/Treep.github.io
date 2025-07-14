@@ -1,4 +1,4 @@
-// Получаем элементы из DOM
+// DOM элементы
 const splash = document.getElementById('splash');
 const loginScreen = document.getElementById('login');
 const main = document.getElementById('main');
@@ -20,17 +20,20 @@ const logoutBtn = document.getElementById('logout-btn');
 const tabButtons = document.querySelectorAll('#top-buttons .tab-btn');
 const tabsWrapper = document.getElementById('tabs-wrapper');
 
-// Переход splash -> login
+// Логика: splash -> login
 splashLogo.addEventListener('click', () => {
   splash.classList.remove('active');
   loginScreen.classList.add('active');
+  errorMsg.textContent = '';
+  errorMsg.style.color = '#f88';
 });
 
-// Вход пользователя
+// Вход (submit формы)
 loginForm.addEventListener('submit', (e) => {
-  e.preventDefault(); // Остановка перезагрузки страницы
+  e.preventDefault();
 
   errorMsg.textContent = '';
+  errorMsg.style.color = '#f88';
 
   const email = emailInput.value.trim();
   const password = passwordInput.value.trim();
@@ -38,16 +41,17 @@ loginForm.addEventListener('submit', (e) => {
   auth.signInWithEmailAndPassword(email, password)
     .then(() => {
       loginForm.reset();
-      // Не переключаем экран здесь, это сделает auth.onAuthStateChanged
+      // экран переключится в onAuthStateChanged
     })
     .catch(error => {
       errorMsg.textContent = error.message;
     });
 });
 
-// Регистрация пользователя
+// Регистрация по кнопке
 document.getElementById('register-btn').addEventListener('click', () => {
   errorMsg.textContent = '';
+  errorMsg.style.color = '#f88';
 
   const email = emailInput.value.trim();
   const password = passwordInput.value.trim();
@@ -59,8 +63,11 @@ document.getElementById('register-btn').addEventListener('click', () => {
   }
 
   auth.createUserWithEmailAndPassword(email, password)
-    .then((userCredential) => userCredential.user.updateProfile({ displayName: nickname }))
+    .then(userCredential => {
+      return userCredential.user.updateProfile({ displayName: nickname });
+    })
     .then(() => {
+      errorMsg.style.color = '#8f8';
       errorMsg.textContent = 'Регистрация успешна! Теперь войдите.';
       loginForm.reset();
     })
@@ -69,7 +76,7 @@ document.getElementById('register-btn').addEventListener('click', () => {
     });
 });
 
-// Выход из аккаунта
+// Выход
 logoutBtn.addEventListener('click', () => {
   auth.signOut().then(() => {
     main.classList.remove('active');
@@ -95,13 +102,13 @@ changeNicknameBtn.addEventListener('click', () => {
         profileInfo.textContent = `Ник: ${user.displayName || 'Без ника'}, Email: ${user.email}`;
         newNicknameInput.value = '';
       })
-      .catch((error) => {
+      .catch(error => {
         profileMessage.textContent = 'Ошибка: ' + error.message;
       });
   }
 });
 
-// Навигация по вкладкам
+// Навигация вкладок
 tabButtons.forEach((btn, idx) => {
   btn.addEventListener('click', () => {
     setActiveTab(idx);
@@ -115,17 +122,15 @@ function setActiveTab(index) {
   });
 }
 
-// Отслеживаем состояние авторизации
+// Слежение за авторизацией
 auth.onAuthStateChanged(user => {
   if (user) {
-    // Пользователь авторизован — показываем главное меню
     splash.classList.remove('active');
     loginScreen.classList.remove('active');
     main.classList.add('active');
 
     profileInfo.textContent = `Ник: ${user.displayName || 'Без ника'}, Email: ${user.email}`;
   } else {
-    // Пользователь не авторизован — показываем splash
     splash.classList.add('active');
     loginScreen.classList.remove('active');
     main.classList.remove('active');
