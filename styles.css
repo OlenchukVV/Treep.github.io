@@ -139,3 +139,46 @@ body, html {
   color: #aaa;
   line-height: 1.4;
 }
+#phone-input-section,
+#code-input-section {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+#phone-input-section input,
+#code-input-section input {
+  flex: 1;
+  padding: 12px 15px;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
+  background-color: #333;
+  color: #eee;
+  outline: none;
+  transition: background-color 0.3s ease;
+}
+
+#phone-input-section input:focus,
+#code-input-section input:focus {
+  background-color: #444;
+}
+
+#phone-input-section button,
+#code-input-section button {
+  padding: 12px 20px;
+  border-radius: 30px;
+  border: none;
+  background-color: #555;
+  color: #eee;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  user-select: none;
+}
+
+#phone-input-section button:hover,
+#code-input-section button:hover {
+  background-color: #777;
+}
