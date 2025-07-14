@@ -1,27 +1,32 @@
-body {
-  margin: 0;
+body, html {
+  margin: 0; padding: 0; height: 100%;
   background-color: #121212;
   color: #eee;
-  font-family: sans-serif;
+  font-family: Arial, sans-serif;
 }
 
-.screen {
-  display: none;
-  width: 100%;
+#app-container {
   height: 100vh;
-  background-color: #121212;
-  color: #eee;
-  overflow: hidden;
-}
-
-.screen.active {
   display: flex;
   flex-direction: column;
 }
 
+.screen {
+  display: none;
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.screen.active {
+  display: block;
+}
+
 #splash {
+  display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #121212;
 }
 
 .logo {
@@ -43,129 +48,81 @@ body {
   background-color: #555;
 }
 
-#login {
-  padding: 20px;
-  justify-content: center;
-  align-items: center;
-}
-
-#login-form {
+#login input {
+  display: block;
   width: 100%;
-  max-width: 300px;
-  display: flex;
-  flex-direction: column;
-}
-
-#login-form input {
-  width: 100%;
-  padding: 12px 15px;
-  margin-bottom: 10px;
-  border-radius: 8px;
+  margin: 10px 0;
+  padding: 10px;
+  background: #222;
   border: none;
-  background-color: #333;
+  border-radius: 5px;
   color: #eee;
-  font-size: 16px;
-  outline: none;
 }
 
 #auth-buttons {
   display: flex;
-  justify-content: space-between;
   gap: 10px;
 }
 
 #auth-buttons button {
   flex: 1;
-  padding: 12px 20px;
-  border-radius: 30px;
+  padding: 10px;
+  background: #444;
   border: none;
-  background-color: #555;
+  border-radius: 5px;
   color: #eee;
-  font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 #auth-buttons button:hover {
-  background-color: #777;
+  background-color: #666;
 }
 
 .error {
   color: #f88;
   margin-top: 10px;
-  text-align: center;
-}
-
-#top-buttons {
-  display: flex;
-  justify-content: space-around;
-  background-color: #1e1e1e;
-}
-
-.tab-btn {
-  flex: 1;
-  padding: 15px;
-  background: none;
-  border: none;
-  color: #aaa;
-  font-size: 16px;
-  cursor: pointer;
-  transition: color 0.3s ease;
-}
-
-.tab-btn.active {
-  color: #eee;
-  border-bottom: 2px solid #eee;
-}
-
-#tabs-wrapper {
-  flex: 1;
-  display: flex;
-  transition: transform 0.3s ease;
-  width: 300%;
-}
-
-.tab {
-  width: 100%;
-  padding: 20px;
-  box-sizing: border-box;
-}
-
-#nickname-change {
-  margin-top: 20px;
-  display: flex;
-  gap: 10px;
-}
-
-#nickname-change input {
-  flex: 1;
-  padding: 10px;
-  border-radius: 8px;
-  border: none;
-  background-color: #333;
-  color: #eee;
-  font-size: 16px;
-  outline: none;
-}
-
-#nickname-change button {
-  padding: 10px 15px;
-  border-radius: 30px;
-  border: none;
-  background-color: #555;
-  color: #eee;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-#nickname-change button:hover {
-  background-color: #777;
 }
 
 .info {
   color: #8f8;
   margin-top: 10px;
-  text-align: center;
-  font-size: 14px;
+}
+
+#top-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 10px;
+  background: #222;
+  border: none;
+  border-radius: 5px;
+  color: #ccc;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.tab-btn.active {
+  background-color: #444;
+  color: #eee;
+}
+
+#tabs-wrapper {
+  overflow: hidden;
+  display: flex;
+  width: 300%; /* 3 вкладки */
+  transition: transform 0.3s ease;
+  height: calc(100% - 60px);
+}
+
+.tab {
+  flex: 0 0 33.3333%;
+  padding: 10px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  height: 100%;
 }
