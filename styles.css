@@ -1,187 +1,61 @@
-/* Сброс стилей */
-* {
+body {
   margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body, html {
-  height: 100%;
   background-color: #121212;
-  color: #ccc;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  color: #eee;
+  font-family: sans-serif;
 }
 
-#app-container {
-  width: 375px;
-  height: 100vh;
-  box-shadow: 0 0 10px #222;
-  border-radius: 12px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  background-color: #1e1e1e;
-}
-
-/* Сообщение на ПК */
-@media (min-width: 421px) {
-  body::before {
-    content: "Пожалуйста, откройте Treep на мобильном телефоне";
-    color: #888;
-    font-size: 18px;
-    text-align: center;
-    padding: 20px;
-    display: block;
-  }
-  #app-container {
-    display: none;
-  }
-}
-
-/* Экран (Splash и Main) */
 .screen {
-  flex: 1;
   display: none;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  padding: 20px;
-  box-sizing: border-box;
+  width: 100%;
+  height: 100vh;
+  background-color: #121212;
+  color: #eee;
+  overflow: hidden;
 }
 
 .screen.active {
   display: flex;
+  flex-direction: column;
 }
 
-/* Логотип на Splash */
-#splash .logo {
-  font-size: 150px;
-  font-weight: 900;
-  color: #888;
-  cursor: pointer;
-  user-select: none;
-  font-family: 'Arial Black', Arial, sans-serif;
-  transition: color 0.3s ease;
-  width: 100%;
-  text-align: center;
-  padding: 0 20px;
+#splash {
+  justify-content: center;
+  align-items: center;
 }
 
-#splash .logo:active,
-#splash .logo:focus {
-  color: #bbb;
-  outline: none;
-}
-
-/* Верхние кнопки переключения */
-#top-buttons {
+.logo {
+  width: 120px;
+  height: 120px;
+  background-color: #333;
+  border-radius: 50%;
+  color: #eee;
+  font-size: 72px;
   display: flex;
   justify-content: center;
-  gap: 20px;
-  margin-bottom: 10px;
-  width: 100%;
-  user-select: none;
-}
-
-.tab-btn {
-  background-color: #333;
-  border: none;
-  padding: 12px 25px;
-  border-radius: 30px;
-  color: #aaa;
-  font-size: 16px;
+  align-items: center;
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  user-select: none;
+  transition: background-color 0.3s ease;
 }
 
-.tab-btn.active {
+.logo:hover {
   background-color: #555;
-  color: #eee;
 }
 
-.tab-btn:focus {
-  outline: 2px solid #888;
-}
-
-/* Контейнер вкладок с анимацией сдвига */
-#tabs-wrapper {
-  flex: 1;
-  display: flex;
-  width: 300%; /* 3 вкладки по 100% */
-  transition: transform 0.4s ease;
-  height: calc(100% - 50px);
-  box-sizing: border-box;
-}
-
-/* Каждая вкладка занимает 100% ширины контейнера */
-.tab {
-  flex: 0 0 33.3333%;
+#login {
   padding: 20px;
-  box-sizing: border-box;
-  overflow-y: auto;
-  background-color: #1e1e1e;
-  border-radius: 0 0 12px 12px;
-  color: #ccc;
+  justify-content: center;
+  align-items: center;
 }
 
-.tab h1 {
-  font-size: 36px;
-  margin-bottom: 20px;
-  color: #eee;
-}
-
-.tab p {
-  font-size: 18px;
-  color: #aaa;
-  line-height: 1.4;
-}
-#phone-input-section,
-#code-input-section {
+#login-form {
   width: 100%;
+  max-width: 300px;
   display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
+  flex-direction: column;
 }
 
-#phone-input-section input,
-#code-input-section input {
-  flex: 1;
-  padding: 12px 15px;
-  border-radius: 8px;
-  border: none;
-  font-size: 16px;
-  background-color: #333;
-  color: #eee;
-  outline: none;
-  transition: background-color 0.3s ease;
-}
-
-#phone-input-section input:focus,
-#code-input-section input:focus {
-  background-color: #444;
-}
-
-#phone-input-section button,
-#code-input-section button {
-  padding: 12px 20px;
-  border-radius: 30px;
-  border: none;
-  background-color: #555;
-  color: #eee;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  user-select: none;
-}
-
-#phone-input-section button:hover,
-#code-input-section button:hover {
-  background-color: #777;
-}
 #login-form input {
   width: 100%;
   padding: 12px 15px;
@@ -192,10 +66,6 @@ body, html {
   color: #eee;
   font-size: 16px;
   outline: none;
-}
-
-#login-form input:focus {
-  background-color: #444;
 }
 
 #auth-buttons {
@@ -226,3 +96,76 @@ body, html {
   text-align: center;
 }
 
+#top-buttons {
+  display: flex;
+  justify-content: space-around;
+  background-color: #1e1e1e;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 15px;
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 16px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.tab-btn.active {
+  color: #eee;
+  border-bottom: 2px solid #eee;
+}
+
+#tabs-wrapper {
+  flex: 1;
+  display: flex;
+  transition: transform 0.3s ease;
+  width: 300%;
+}
+
+.tab {
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+#nickname-change {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+#nickname-change input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background-color: #333;
+  color: #eee;
+  font-size: 16px;
+  outline: none;
+}
+
+#nickname-change button {
+  padding: 10px 15px;
+  border-radius: 30px;
+  border: none;
+  background-color: #555;
+  color: #eee;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#nickname-change button:hover {
+  background-color: #777;
+}
+
+.info {
+  color: #8f8;
+  margin-top: 10px;
+  text-align: center;
+  font-size: 14px;
+}
