@@ -11,8 +11,5 @@ const firebaseConfig = {
   measurementId: "G-F7T64XE65K"
 };
 
-// Инициализация Firebase
 firebase.initializeApp(firebaseConfig);
-
-// Экспорт объекта аутентификации, чтобы использовать в других файлах
 const auth = firebase.auth();
