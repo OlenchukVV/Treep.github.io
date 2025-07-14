@@ -5,33 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>Treep — Твой мухоморный друг</title>
   <link rel="stylesheet" href="styles.css" />
-  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 </head>
 <body>
   <div id="app-container">
 
-    <!-- Login screen -->
+    <!-- Login/Register screen -->
     <div id="login" class="screen active">
-      <h1>Авторизация по номеру телефона</h1>
+      <h1>Вход / Регистрация в Treep</h1>
+      
+      <form id="login-form">
+        <input type="text" id="nickname" placeholder="Ник (для регистрации)" autocomplete="off" />
+        <input type="email" id="email" placeholder="Email" autocomplete="username" required />
+        <input type="password" id="password" placeholder="Пароль" autocomplete="current-password" required minlength="6" />
 
-      <!-- Форма ввода номера -->
-      <div id="phone-input-section">
-        <input type="tel" id="phone-number" placeholder="+7 900 000-00-00" autocomplete="tel" />
-        <button id="send-code-btn">Отправить код</button>
-      </div>
-
-      <!-- Форма ввода кода -->
-      <div id="code-input-section" style="display:none;">
-        <input type="text" id="verification-code" placeholder="Введите код из SMS" maxlength="6" />
-        <button id="verify-code-btn">Подтвердить код</button>
-      </div>
+        <div id="auth-buttons">
+          <button type="submit" id="login-btn">Войти</button>
+          <button type="button" id="register-btn">Зарегистрироваться</button>
+        </div>
+      </form>
 
       <p id="error-msg" class="error"></p>
-
-      <!-- reCAPTCHA контейнер -->
-      <div id="recaptcha-container"></div>
     </div>
 
     <!-- Splash screen -->
@@ -67,7 +62,6 @@
     </div>
   </div>
 
-  <!-- Скрипты -->
   <script src="firebase.js"></script>
   <script src="script.js"></script>
 </body>
