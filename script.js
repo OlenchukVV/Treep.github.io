@@ -3,7 +3,14 @@ const splash = document.getElementById('splash');
 const loginScreen = document.getElementById('login');
 const main = document.getElementById('main');
 
-const logo = splash.querySelector('.logo');
+const splashLogo = document.getElementById('splash-logo');
+
+splashLogo.addEventListener('click', () => {
+  console.log('Нажали на T!');
+  splash.classList.remove('active');
+  loginScreen.classList.add('active');
+});
+
 
 const loginForm = document.getElementById('login-form');
 const nicknameInput = document.getElementById('nickname');
