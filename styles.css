@@ -1,5 +1,7 @@
 body, html {
-  margin: 0; padding: 0; height: 100%;
+  margin: 0; 
+  padding: 0; 
+  height: 100%;
   background-color: #121212;
   color: #eee;
   font-family: Arial, sans-serif;
@@ -13,7 +15,8 @@ body, html {
 
 .screen {
   display: none;
-  height: 100%;
+  height: 100vh;
+  width: 100vw;
   padding: 20px;
   box-sizing: border-box;
 }
@@ -22,11 +25,18 @@ body, html {
   display: block;
 }
 
+/* SPLASH SCREEN */
 #splash {
-  display: flex;
+  display: none; /* скрыт по умолчанию */
   justify-content: center;
   align-items: center;
   background-color: #121212;
+  height: 100vh;
+  width: 100vw;
+}
+
+#splash.active {
+  display: flex; /* показываем и центрируем */
 }
 
 .logo {
@@ -48,6 +58,7 @@ body, html {
   background-color: #555;
 }
 
+/* LOGIN SCREEN */
 #login input {
   display: block;
   width: 100%;
@@ -89,6 +100,7 @@ body, html {
   margin-top: 10px;
 }
 
+/* MAIN CONTENT TABS */
 #top-buttons {
   display: flex;
   gap: 10px;
