@@ -25,14 +25,16 @@ body, html {
   display: block;
 }
 
-/* SPLASH SCREEN */
 #splash {
-  display: none; /* скрыт по умолчанию */
+  display: flex;
   justify-content: center;
   align-items: center;
   background-color: #121212;
-  height: 100vh;
-  width: 100vw;
+  font-size: 120px;
+  font-weight: bold;
+  color: #eee;
+  user-select: none;
+  cursor: pointer;
 }
 
 #splash.active {
