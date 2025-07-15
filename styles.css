@@ -27,7 +27,7 @@ body, html {
 
 /* SPLASH SCREEN */
 #splash {
-  display: none;
+  display: none; /* скрыт по умолчанию */
   justify-content: center;
   align-items: center;
   background-color: #121212;
@@ -36,7 +36,7 @@ body, html {
 }
 
 #splash.active {
-  display: flex;
+  display: flex; /* показываем и центрируем */
 }
 
 .logo {
@@ -123,96 +123,65 @@ body, html {
   color: #eee;
 }
 
+/* Убираем сдвиг вкладок, показываем только активную */
 #tabs-wrapper {
-  overflow: hidden;
-  display: flex;
-  width: 300%; /* 3 вкладки */
-  transition: transform 0.3s ease;
   height: calc(100% - 60px);
 }
 
 .tab {
-  flex: 0 0 33.3333%;
+  display: none;
   padding: 10px;
   box-sizing: border-box;
   overflow-y: auto;
   height: 100%;
 }
 
-/* Профиль - аватар */
-#profile {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 20px;
-  height: 100%;
-  box-sizing: border-box;
-  overflow-y: auto;
-  color: #eee;
+.tab.active {
+  display: block;
 }
 
+/* ПРОФИЛЬ */
 #profile-avatar-container {
-  position: relative;
-  width: 140px;
-  height: 140px;
+  display: flex;
+  justify-content: center;
   margin-bottom: 15px;
 }
 
 #profile-avatar {
-  width: 140px;
-  height: 140px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
+  border: 2px solid #888;
   object-fit: cover;
-  background-color: #444;
-  border: 3px solid #666;
-  box-shadow: 0 0 10px #222 inset;
-  cursor: pointer;
-  transition: box-shadow 0.3s ease;
 }
 
-#profile-avatar:hover {
-  box-shadow: 0 0 15px #8af inset;
-}
-
-#avatar-upload {
-  position: absolute;
-  width: 140px;
-  height: 140px;
-  top: 0;
-  left: 0;
-  opacity: 0;
-  cursor: pointer;
-  border-radius: 50%;
-}
-
-#avatar-message {
-  margin-top: 5px;
-  font-size: 0.9em;
-  color: #8f8;
+#profile-nickname, #profile-email {
+  font-size: 18px;
+  margin: 5px 0;
   text-align: center;
 }
 
 #nickname-change {
   margin-top: 20px;
-  width: 100%;
-  max-width: 320px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
 }
 
 #nickname-change input {
-  width: 70%;
   padding: 8px;
   border-radius: 5px;
   border: none;
   background: #222;
   color: #eee;
-  margin-right: 10px;
+  width: 180px;
 }
 
 #nickname-change button {
-  padding: 9px 15px;
-  border-radius: 5px;
+  padding: 8px 12px;
   border: none;
-  background: #444;
+  border-radius: 5px;
+  background-color: #444;
   color: #eee;
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -223,13 +192,16 @@ body, html {
 }
 
 #logout-btn {
-  margin-top: 25px;
-  padding: 10px 20px;
-  background: #b33;
-  color: #eee;
+  margin-top: 30px;
+  display: block;
+  width: 100%;
+  padding: 12px;
   border: none;
   border-radius: 5px;
+  background-color: #a33;
+  color: #eee;
   cursor: pointer;
+  font-weight: bold;
   transition: background-color 0.3s ease;
 }
 
