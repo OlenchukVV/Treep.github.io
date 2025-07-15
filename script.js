@@ -156,3 +156,85 @@ auth.onAuthStateChanged(user => {
     profileAvatar.src = 'default-avatar.png';
   }
 });
+const userList = document.getElementById("user-list");
+const chatWindow = document.getElementById("chat-window");
+const chatMessages = document.getElementById("chat-messages");
+const chatForm = document.getElementById("chat-form");
+const chatInput = document.getElementById("chat-input");
+const chatHeader = document.getElementById("chat-header");
+
+let currentUser = null;
+let currentChatUser = null;
+let unsubscribeMessages = null;
+
+auth.onAuthStateChanged(user => {
+  if (user) {
+    currentUser = user;
+    loadUsers();
+  }
+});
+
+function loadUsers() {
+  firebase.firestore().collection("users").onSnapshot(snapshot => {
+    userList.innerHTML = "";
+    snapshot.forEach(doc => {
+      const userData = doc.data();
+      if (doc.id !== currentUser.uid) {
+        const div = document.createElement("div");
+        div.textContent = userData.nickname || userData.email;
+        div.classList.add("chat-user");
+        div.addEventListener("click", () => openChat(doc.id, userData.nickname || userData.email));
+        userList.appendChild(div);
+      }
+    });
+  });
+}
+
+function getChatId(user1, user2) {
+  return [user1, user2].sort().join("_");
+}
+
+function openChat(uid, name) {
+  currentChatUser = uid;
+  chatHeader.textContent = `Чат с ${name}`;
+  chatWindow.classList.remove("hidden");
+
+  const chatId = getChatId(currentUser.uid, uid);
+  const messagesRef = firebase.firestore()
+    .collection("chats").doc(chatId).collection("messages").orderBy("timestamp");
+
+  if (unsubscribeMessages) unsubscribeMessages();
+
+  unsubscribeMessages = messagesRef.onSnapshot(snapshot => {
+    chatMessages.innerHTML = "";
+    snapshot.forEach(doc => {
+      const msg = doc.data();
+      const div = document.createElement("div");
+      div.textContent = (msg.sender === currentUser.uid ? "Вы: " : "Он: ") + msg.text;
+      chatMessages.appendChild(div);
+    });
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  });
+}
+
+chatForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const text = chatInput.value.trim();
+  if (!text || !currentChatUser) return;
+
+  const chatId = getChatId(currentUser.uid, currentChatUser);
+  const message = {
+    text,
+    sender: currentUser.uid,
+    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+  };
+
+  firebase.firestore()
+    .collection("chats")
+    .doc(chatId)
+    .collection("messages")
+    .add(message);
+
+  chatInput.value = "";
+});
+
