@@ -1,41 +1,56 @@
+/* Reset */
 body, html {
   margin: 0; padding: 0; height: 100%;
   background-color: #121212;
   color: #eee;
   font-family: Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden; /* Чтобы не было скролла страницы, скроллим внутри */
 }
 
+/* Контейнер всего приложения */
 #app-container {
   height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
+/* Экран (splash, login, main) */
 .screen {
   display: none;
   height: 100%;
-  padding: 20px;
   box-sizing: border-box;
+  padding: 20px;
+  overflow-y: auto;
 }
 
 .screen.active {
   display: block;
 }
 
+/* Splash - на весь экран, по центру */
 #splash {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #121212;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #121212;
+  z-index: 1000;
 }
 
+/* Логотип буква T на splash */
 .logo {
-  width: 120px;
-  height: 120px;
+  width: 140px;
+  height: 140px;
   background-color: #333;
   border-radius: 50%;
   color: #eee;
-  font-size: 72px;
+  font-size: 96px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -48,31 +63,44 @@ body, html {
   background-color: #555;
 }
 
+/* Форма логина/регистрации */
 #login input {
   display: block;
   width: 100%;
-  margin: 10px 0;
-  padding: 10px;
+  margin: 12px 0;
+  padding: 12px 15px;
   background: #222;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   color: #eee;
+  font-size: 16px;
+  box-sizing: border-box;
+  outline-offset: 2px;
+  outline-color: transparent;
+  transition: outline-color 0.2s ease;
+}
+
+#login input:focus {
+  outline-color: #666;
 }
 
 #auth-buttons {
   display: flex;
-  gap: 10px;
+  gap: 12px;
+  margin-top: 15px;
 }
 
 #auth-buttons button {
   flex: 1;
-  padding: 10px;
+  padding: 12px 0;
   background: #444;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   color: #eee;
+  font-weight: 600;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  font-size: 16px;
 }
 
 #auth-buttons button:hover {
@@ -81,29 +109,35 @@ body, html {
 
 .error {
   color: #f88;
-  margin-top: 10px;
+  margin-top: 12px;
+  font-weight: 600;
 }
 
 .info {
   color: #8f8;
-  margin-top: 10px;
+  margin-top: 12px;
+  font-weight: 600;
 }
 
+/* Навигация по вкладкам в main */
 #top-buttons {
   display: flex;
   gap: 10px;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 .tab-btn {
   flex: 1;
-  padding: 10px;
+  padding: 12px 0;
   background: #222;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   color: #ccc;
+  font-weight: 600;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  font-size: 16px;
+  user-select: none;
 }
 
 .tab-btn.active {
@@ -111,18 +145,98 @@ body, html {
   color: #eee;
 }
 
+/* Контейнер вкладок (профиль, чаты, группы) */
 #tabs-wrapper {
   overflow: hidden;
   display: flex;
-  width: 300%; /* 3 вкладки */
+  width: 300%; /* Три вкладки по 100% ширины */
+  height: calc(100% - 70px);
   transition: transform 0.3s ease;
-  height: calc(100% - 60px);
 }
 
+/* Каждая вкладка */
 .tab {
   flex: 0 0 33.3333%;
-  padding: 10px;
+  padding: 12px;
   box-sizing: border-box;
-  overflow-y: auto;
   height: 100%;
+  overflow-y: auto;
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  box-shadow: inset 0 0 10px #00000066;
+}
+
+/* Профиль - ник и кнопки */
+#nickname-change {
+  margin: 15px 0 25px 0;
+  display: flex;
+  gap: 10px;
+}
+
+#nickname-change input {
+  flex: 1;
+  padding: 10px 15px;
+  background: #222;
+  border-radius: 8px;
+  border: none;
+  color: #eee;
+  font-size: 15px;
+}
+
+#nickname-change button {
+  padding: 10px 20px;
+  background: #444;
+  border-radius: 8px;
+  border: none;
+  color: #eee;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#nickname-change button:hover {
+  background-color: #666;
+}
+
+/* Кнопка выхода */
+#logout-btn {
+  padding: 12px 0;
+  width: 100%;
+  background: #800000cc;
+  border: none;
+  border-radius: 8px;
+  color: #eee;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 16px;
+}
+
+#logout-btn:hover {
+  background-color: #aa0000cc;
+}
+
+/* Стили для чатов и групп - пока простой текст */
+#chats, #groups {
+  color: #ccc;
+}
+
+/* Горизонтальный скролл для списка пользователей и сообщений можно добавить позже */
+
+/* Для мобильного экрана адаптация */
+@media (max-width: 480px) {
+  #app-container {
+    padding: 10px;
+  }
+  #login input, #nickname-change input {
+    font-size: 14px;
+  }
+  #auth-buttons button, #nickname-change button, #logout-btn {
+    font-size: 14px;
+  }
+  .logo {
+    width: 100px;
+    height: 100px;
+    font-size: 72px;
+  }
 }
