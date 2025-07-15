@@ -42,8 +42,8 @@ body, html {
 .logo {
   width: 120px;
   height: 120px;
-  /* убираем border-radius, чтобы круг пропал */
-  background-color: transparent;
+  background-color: #333;
+  border-radius: 50%;
   color: #eee;
   font-size: 72px;
   display: flex;
@@ -55,7 +55,7 @@ body, html {
 }
 
 .logo:hover {
-  background-color: #222;
+  background-color: #555;
 }
 
 /* LOGIN SCREEN */
@@ -123,19 +123,116 @@ body, html {
   color: #eee;
 }
 
-.tab {
+#tabs-wrapper {
+  overflow: hidden;
+  display: flex;
+  width: 300%; /* 3 вкладки */
+  transition: transform 0.3s ease;
   height: calc(100% - 60px);
-  overflow-y: auto;
 }
 
-/* Аватар в профиле */
+.tab {
+  flex: 0 0 33.3333%;
+  padding: 10px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  height: 100%;
+}
+
+/* Профиль - аватар */
+#profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  height: 100%;
+  box-sizing: border-box;
+  overflow-y: auto;
+  color: #eee;
+}
+
 #profile-avatar-container {
+  position: relative;
+  width: 140px;
+  height: 140px;
   margin-bottom: 15px;
 }
+
 #profile-avatar {
+  width: 140px;
+  height: 140px;
   border-radius: 50%;
-  width: 120px;
-  height: 120px;
   object-fit: cover;
   background-color: #444;
+  border: 3px solid #666;
+  box-shadow: 0 0 10px #222 inset;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease;
+}
+
+#profile-avatar:hover {
+  box-shadow: 0 0 15px #8af inset;
+}
+
+#avatar-upload {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+#avatar-message {
+  margin-top: 5px;
+  font-size: 0.9em;
+  color: #8f8;
+  text-align: center;
+}
+
+#nickname-change {
+  margin-top: 20px;
+  width: 100%;
+  max-width: 320px;
+}
+
+#nickname-change input {
+  width: 70%;
+  padding: 8px;
+  border-radius: 5px;
+  border: none;
+  background: #222;
+  color: #eee;
+  margin-right: 10px;
+}
+
+#nickname-change button {
+  padding: 9px 15px;
+  border-radius: 5px;
+  border: none;
+  background: #444;
+  color: #eee;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#nickname-change button:hover {
+  background-color: #666;
+}
+
+#logout-btn {
+  margin-top: 25px;
+  padding: 10px 20px;
+  background: #b33;
+  color: #eee;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#logout-btn:hover {
+  background-color: #d55;
 }
