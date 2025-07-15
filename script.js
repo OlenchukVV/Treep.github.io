@@ -68,17 +68,23 @@ document.getElementById('register-btn').addEventListener('click', () => {
   }
 
   auth.createUserWithEmailAndPassword(email, password)
-    .then(userCredential => {
-      return userCredential.user.updateProfile({ displayName: nickname });
-    })
-    .then(() => {
-      errorMsg.style.color = '#8f8';
-      errorMsg.textContent = 'Регистрация успешна! Теперь войдите.';
-      loginForm.reset();
-    })
-    .catch(error => {
-      errorMsg.textContent = error.message;
+  .then(userCredential => {
+    return userCredential.user.updateProfile({ displayName: nickname }).then(() => {
+      // Сохраним данные пользователя в коллекции "users"
+      return firebase.firestore().collection("users").doc(userCredential.user.uid).set({
+        nickname,
+        email
+      });
     });
+  })
+  .then(() => {
+    errorMsg.style.color = '#8f8';
+    errorMsg.textContent = 'Регистрация успешна! Теперь войдите.';
+    loginForm.reset();
+  })
+  .catch(error => {
+    errorMsg.textContent = error.message;
+  });
 });
 
 // Logout
