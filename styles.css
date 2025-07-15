@@ -27,7 +27,7 @@ body, html {
 
 /* SPLASH SCREEN */
 #splash {
-  display: none; /* скрыт по умолчанию */
+  display: none;
   justify-content: center;
   align-items: center;
   background-color: #121212;
@@ -36,14 +36,14 @@ body, html {
 }
 
 #splash.active {
-  display: flex; /* показываем и центрируем */
+  display: flex;
 }
 
 .logo {
   width: 120px;
   height: 120px;
-  background-color: #333;
-  border-radius: 50%;
+  /* убираем border-radius, чтобы круг пропал */
+  background-color: transparent;
   color: #eee;
   font-size: 72px;
   display: flex;
@@ -55,7 +55,7 @@ body, html {
 }
 
 .logo:hover {
-  background-color: #555;
+  background-color: #222;
 }
 
 /* LOGIN SCREEN */
@@ -123,88 +123,19 @@ body, html {
   color: #eee;
 }
 
-/* Убираем сдвиг вкладок, показываем только активную */
-#tabs-wrapper {
-  height: calc(100% - 60px);
-}
-
 .tab {
-  display: none;
-  padding: 10px;
-  box-sizing: border-box;
+  height: calc(100% - 60px);
   overflow-y: auto;
-  height: 100%;
 }
 
-.tab.active {
-  display: block;
-}
-
-/* ПРОФИЛЬ */
+/* Аватар в профиле */
 #profile-avatar-container {
-  display: flex;
-  justify-content: center;
   margin-bottom: 15px;
 }
-
 #profile-avatar {
+  border-radius: 50%;
   width: 120px;
   height: 120px;
-  border-radius: 50%;
-  border: 2px solid #888;
   object-fit: cover;
-}
-
-#profile-nickname, #profile-email {
-  font-size: 18px;
-  margin: 5px 0;
-  text-align: center;
-}
-
-#nickname-change {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-
-#nickname-change input {
-  padding: 8px;
-  border-radius: 5px;
-  border: none;
-  background: #222;
-  color: #eee;
-  width: 180px;
-}
-
-#nickname-change button {
-  padding: 8px 12px;
-  border: none;
-  border-radius: 5px;
   background-color: #444;
-  color: #eee;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-#nickname-change button:hover {
-  background-color: #666;
-}
-
-#logout-btn {
-  margin-top: 30px;
-  display: block;
-  width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 5px;
-  background-color: #a33;
-  color: #eee;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-}
-
-#logout-btn:hover {
-  background-color: #d55;
 }
