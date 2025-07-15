@@ -124,17 +124,25 @@ body, html {
 }
 
 #tabs-wrapper {
-  overflow: hidden;
-  display: flex;
-  width: 300%; /* 3 вкладки */
-  transition: transform 0.3s ease;
+  /* Убрали flex и ширину */
   height: calc(100% - 60px);
+  position: relative;
+  overflow: hidden; /* чтобы вкладки не вылазили */
 }
 
 .tab {
-  flex: 0 0 33.3333%;
+  display: none;
   padding: 10px;
   box-sizing: border-box;
   overflow-y: auto;
   height: 100%;
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #1e1e1e; /* Можно фон добавить, чтобы лучше смотрелось */
+  border-radius: 8px;
+}
+
+.tab.active {
+  display: block;
+  position: relative;
 }
