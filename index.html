@@ -8,6 +8,7 @@
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
 </head>
 <body>
   <div id="app-container">
@@ -20,39 +21,38 @@
     <!-- Login/Register screen -->
     <div id="login" class="screen">
       <h1>Вход / Регистрация в Treep</h1>
-      
       <form id="login-form">
         <input type="text" id="nickname" placeholder="Ник (для регистрации)" autocomplete="off" />
         <input type="email" id="email" placeholder="Email" autocomplete="username" required />
         <input type="password" id="password" placeholder="Пароль" autocomplete="current-password" required minlength="6" />
-
         <div id="auth-buttons">
           <button type="submit" id="login-btn">Войти</button>
           <button type="button" id="register-btn">Зарегистрироваться</button>
         </div>
       </form>
-
       <p id="error-msg" class="error"></p>
     </div>
 
     <!-- Main content -->
     <div id="main" class="screen">
       <div id="top-buttons">
-        <button class="tab-btn active" data-index="profile">Профиль</button>
-        <button class="tab-btn" data-index="chats">Чаты</button>
-        <button class="tab-btn" data-index="groups">Группы</button>
+        <button class="tab-btn active" data-index="0">Профиль</button>
+        <button class="tab-btn" data-index="1">Чаты</button>
+        <button class="tab-btn" data-index="2">Группы</button>
       </div>
 
       <div id="tabs-wrapper">
-        <section class="tab active" id="profile">
+        <!-- Профиль -->
+        <section class="tab" id="profile">
           <h1>Профиль</h1>
 
           <div id="profile-avatar-container">
-            <img id="profile-avatar" src="default-avatar.png" alt="Аватар" />
+            <img id="profile-avatar" src="default-avatar.png" alt="Аватар" width="120" height="120" style="border-radius: 50%; object-fit: cover;" />
+            <input type="file" id="avatar-upload" accept="image/*" style="margin-top: 10px;" />
+            <p id="avatar-message" class="info"></p>
           </div>
 
-          <p id="profile-nickname">Ник: <span>Загрузка...</span></p>
-          <p id="profile-email">Email: <span>Загрузка...</span></p>
+          <p id="profile-info">Загрузка...</p>
 
           <div id="nickname-change">
             <input type="text" id="new-nickname" placeholder="Новый ник" />
@@ -63,11 +63,13 @@
           <p id="profile-message" class="info"></p>
         </section>
 
+        <!-- Чаты -->
         <section class="tab" id="chats">
           <h1>Чаты</h1>
           <p>Здесь будут ваши сообщения.</p>
         </section>
 
+        <!-- Группы -->
         <section class="tab" id="groups">
           <h1>Группы</h1>
           <p>Здесь будут групповые чаты.</p>
