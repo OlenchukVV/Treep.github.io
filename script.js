@@ -1,3 +1,13 @@
+// Firebase конфиг и инициализация (поставь свои данные в firebase.js)
+const firebaseConfig = {
+  // Твои данные из консоли Firebase
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
+const storage = firebase.storage();
+
 // DOM элементы
 const splash = document.getElementById('splash');
 const loginScreen = document.getElementById('login');
@@ -24,7 +34,7 @@ const avatarUploadInput = document.getElementById('avatar-upload');
 const avatarMessage = document.getElementById('avatar-message');
 const profileAvatar = document.getElementById('profile-avatar');
 
-// Логика: splash -> login
+// Splash -> Login
 splashLogo.addEventListener('click', () => {
   splash.classList.remove('active');
   loginScreen.classList.add('active');
@@ -32,7 +42,7 @@ splashLogo.addEventListener('click', () => {
   errorMsg.style.color = '#f88';
 });
 
-// Вход (submit формы)
+// Вход
 loginForm.addEventListener('submit', (e) => {
   e.preventDefault();
 
@@ -45,14 +55,14 @@ loginForm.addEventListener('submit', (e) => {
   auth.signInWithEmailAndPassword(email, password)
     .then(() => {
       loginForm.reset();
-      // экран переключится в onAuthStateChanged
+      // переключение будет в onAuthStateChanged
     })
     .catch(error => {
       errorMsg.textContent = error.message;
     });
 });
 
-// Регистрация по кнопке
+// Регистрация
 document.getElementById('register-btn').addEventListener('click', () => {
   errorMsg.textContent = '';
   errorMsg.style.color = '#f88';
@@ -120,36 +130,13 @@ tabButtons.forEach((btn, idx) => {
 });
 
 function setActiveTab(index) {
-  // Показываем нужную вкладку, остальные скрываем
-  document.querySelectorAll('.tab').forEach((tab, i) => {
-    tab.style.display = (i === index) ? 'block' : 'none';
-  });
+  tabsWrapper.style.transform = `translateX(-${index * (100 / 3)}%)`;
   tabButtons.forEach((btn, i) => {
     btn.classList.toggle('active', i === index);
   });
 }
 
-// Слежение за авторизацией
-auth.onAuthStateChanged(user => {
-  if (user) {
-    splash.classList.remove('active');
-    loginScreen.classList.remove('active');
-    main.classList.add('active');
-
-    profileInfo.textContent = `Ник: ${user.displayName || 'Без ника'}, Email: ${user.email}`;
-    profileAvatar.src = user.photoURL || 'default-avatar.png';
-
-    setActiveTab(0); // Показываем профиль по умолчанию
-  } else {
-    splash.classList.add('active');
-    loginScreen.classList.remove('active');
-    main.classList.remove('active');
-
-    profileInfo.textContent = 'Загрузка...';
-  }
-});
-
-// Загрузка и смена аватара
+// Загрузка аватара
 avatarUploadInput.addEventListener('change', async (e) => {
   const file = e.target.files[0];
   if (!file) return;
@@ -160,7 +147,7 @@ avatarUploadInput.addEventListener('change', async (e) => {
     const user = auth.currentUser;
     if (!user) throw new Error('Пользователь не авторизован');
 
-    const storageRef = firebase.storage().ref();
+    const storageRef = storage.ref();
     const avatarRef = storageRef.child(`avatars/${user.uid}/${file.name}`);
 
     await avatarRef.put(file);
@@ -169,8 +156,27 @@ avatarUploadInput.addEventListener('change', async (e) => {
     await user.updateProfile({ photoURL });
 
     profileAvatar.src = photoURL;
-    avatarMessage.textContent = 'Аватар успешно обновлен!';
+    avatarMessage.textContent = 'Аватар успешно обновлён!';
   } catch (err) {
     avatarMessage.textContent = 'Ошибка: ' + err.message;
+  }
+});
+
+// Отслеживание авторизации
+auth.onAuthStateChanged(user => {
+  if (user) {
+    splash.classList.remove('active');
+    loginScreen.classList.remove('active');
+    main.classList.add('active');
+
+    profileInfo.textContent = `Ник: ${user.displayName || 'Без ника'}, Email: ${user.email}`;
+    profileAvatar.src = user.photoURL || 'default-avatar.png';
+  } else {
+    splash.classList.add('active');
+    loginScreen.classList.remove('active');
+    main.classList.remove('active');
+
+    profileInfo.textContent = 'Загрузка...';
+    profileAvatar.src = 'default-avatar.png';
   }
 });
