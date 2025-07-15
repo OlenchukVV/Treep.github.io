@@ -116,9 +116,17 @@ tabButtons.forEach((btn, idx) => {
 });
 
 function setActiveTab(index) {
-  tabsWrapper.style.transform = `translateX(-${index * (100 / 3)}%)`;
   tabButtons.forEach((btn, i) => {
     btn.classList.toggle('active', i === index);
+  });
+
+  const tabs = document.querySelectorAll('.tab');
+  tabs.forEach((tab, i) => {
+    if (i === index) {
+      tab.classList.add('active');
+    } else {
+      tab.classList.remove('active');
+    }
   });
 }
 
