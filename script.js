@@ -1,6 +1,3 @@
-// Firebase config и инициализация auth — предположим, что это есть в firebase.js
-// const auth = firebase.auth();
-
 // DOM элементы
 const splash = document.getElementById('splash');
 const loginScreen = document.getElementById('login');
@@ -14,18 +11,20 @@ const emailInput = document.getElementById('email');
 const passwordInput = document.getElementById('password');
 const errorMsg = document.getElementById('error-msg');
 
-const profileAvatar = document.getElementById('profile-avatar');
-const nickSpan = document.querySelector('#profile-nickname span');
-const emailSpan = document.querySelector('#profile-email span');
+const profileInfo = document.getElementById('profile-info');
 const newNicknameInput = document.getElementById('new-nickname');
 const changeNicknameBtn = document.getElementById('change-nickname-btn');
 const profileMessage = document.getElementById('profile-message');
 const logoutBtn = document.getElementById('logout-btn');
 
 const tabButtons = document.querySelectorAll('#top-buttons .tab-btn');
-const tabs = document.querySelectorAll('.tab');
+const tabsWrapper = document.getElementById('tabs-wrapper');
 
-// Splash -> login
+const avatarUploadInput = document.getElementById('avatar-upload');
+const avatarMessage = document.getElementById('avatar-message');
+const profileAvatar = document.getElementById('profile-avatar');
+
+// Логика: splash -> login
 splashLogo.addEventListener('click', () => {
   splash.classList.remove('active');
   loginScreen.classList.add('active');
@@ -33,7 +32,7 @@ splashLogo.addEventListener('click', () => {
   errorMsg.style.color = '#f88';
 });
 
-// Login submit
+// Вход (submit формы)
 loginForm.addEventListener('submit', (e) => {
   e.preventDefault();
 
@@ -53,7 +52,7 @@ loginForm.addEventListener('submit', (e) => {
     });
 });
 
-// Register button
+// Регистрация по кнопке
 document.getElementById('register-btn').addEventListener('click', () => {
   errorMsg.textContent = '';
   errorMsg.style.color = '#f88';
@@ -81,7 +80,7 @@ document.getElementById('register-btn').addEventListener('click', () => {
     });
 });
 
-// Logout
+// Выход
 logoutBtn.addEventListener('click', () => {
   auth.signOut().then(() => {
     main.classList.remove('active');
@@ -89,7 +88,7 @@ logoutBtn.addEventListener('click', () => {
   });
 });
 
-// Change nickname
+// Смена ника
 changeNicknameBtn.addEventListener('click', () => {
   profileMessage.textContent = '';
   const newNick = newNicknameInput.value.trim();
@@ -104,7 +103,7 @@ changeNicknameBtn.addEventListener('click', () => {
     user.updateProfile({ displayName: newNick })
       .then(() => {
         profileMessage.textContent = 'Ник успешно обновлён!';
-        nickSpan.textContent = newNick;
+        profileInfo.textContent = `Ник: ${user.displayName || 'Без ника'}, Email: ${user.email}`;
         newNicknameInput.value = '';
       })
       .catch(error => {
@@ -113,46 +112,65 @@ changeNicknameBtn.addEventListener('click', () => {
   }
 });
 
-// Tabs navigation — показываем только активный таб
-tabButtons.forEach(btn => {
+// Навигация вкладок
+tabButtons.forEach((btn, idx) => {
   btn.addEventListener('click', () => {
-    const targetId = btn.getAttribute('data-index');
-
-    tabButtons.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-
-    tabs.forEach(tab => {
-      if (tab.id === targetId) {
-        tab.classList.add('active');
-      } else {
-        tab.classList.remove('active');
-      }
-    });
+    setActiveTab(idx);
   });
 });
 
-// Auth state observer
+function setActiveTab(index) {
+  // Показываем нужную вкладку, остальные скрываем
+  document.querySelectorAll('.tab').forEach((tab, i) => {
+    tab.style.display = (i === index) ? 'block' : 'none';
+  });
+  tabButtons.forEach((btn, i) => {
+    btn.classList.toggle('active', i === index);
+  });
+}
+
+// Слежение за авторизацией
 auth.onAuthStateChanged(user => {
   if (user) {
     splash.classList.remove('active');
     loginScreen.classList.remove('active');
     main.classList.add('active');
 
-    nickSpan.textContent = user.displayName || 'Без ника';
-    emailSpan.textContent = user.email;
+    profileInfo.textContent = `Ник: ${user.displayName || 'Без ника'}, Email: ${user.email}`;
+    profileAvatar.src = user.photoURL || 'default-avatar.png';
 
-    if (user.photoURL) {
-      profileAvatar.src = user.photoURL;
-    } else {
-      profileAvatar.src = 'default-avatar.png'; // Укажи путь к своему дефолтному аватару
-    }
+    setActiveTab(0); // Показываем профиль по умолчанию
   } else {
     splash.classList.add('active');
     loginScreen.classList.remove('active');
     main.classList.remove('active');
 
-    nickSpan.textContent = 'Загрузка...';
-    emailSpan.textContent = 'Загрузка...';
-    profileAvatar.src = 'default-avatar.png';
+    profileInfo.textContent = 'Загрузка...';
+  }
+});
+
+// Загрузка и смена аватара
+avatarUploadInput.addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  avatarMessage.textContent = 'Загрузка...';
+
+  try {
+    const user = auth.currentUser;
+    if (!user) throw new Error('Пользователь не авторизован');
+
+    const storageRef = firebase.storage().ref();
+    const avatarRef = storageRef.child(`avatars/${user.uid}/${file.name}`);
+
+    await avatarRef.put(file);
+    const photoURL = await avatarRef.getDownloadURL();
+
+    await user.updateProfile({ photoURL });
+
+    profileAvatar.src = photoURL;
+    avatarMessage.textContent = 'Аватар успешно обновлен!';
+  } catch (err) {
+    avatarMessage.textContent = 'Ошибка: ' + err.message;
   }
 });
