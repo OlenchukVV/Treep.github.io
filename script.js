@@ -1,12 +1,5 @@
-// Firebase конфиг и инициализация (поставь свои данные в firebase.js)
-const firebaseConfig = {
-  // Твои данные из консоли Firebase
-};
-
-firebase.initializeApp(firebaseConfig);
-
-const auth = firebase.auth();
-const storage = firebase.storage();
+// Firebase config и инициализация auth — предположим, что это есть в firebase.js
+// const auth = firebase.auth();
 
 // DOM элементы
 const splash = document.getElementById('splash');
@@ -21,20 +14,18 @@ const emailInput = document.getElementById('email');
 const passwordInput = document.getElementById('password');
 const errorMsg = document.getElementById('error-msg');
 
-const profileInfo = document.getElementById('profile-info');
+const profileAvatar = document.getElementById('profile-avatar');
+const nickSpan = document.querySelector('#profile-nickname span');
+const emailSpan = document.querySelector('#profile-email span');
 const newNicknameInput = document.getElementById('new-nickname');
 const changeNicknameBtn = document.getElementById('change-nickname-btn');
 const profileMessage = document.getElementById('profile-message');
 const logoutBtn = document.getElementById('logout-btn');
 
 const tabButtons = document.querySelectorAll('#top-buttons .tab-btn');
-const tabsWrapper = document.getElementById('tabs-wrapper');
+const tabs = document.querySelectorAll('.tab');
 
-const avatarUploadInput = document.getElementById('avatar-upload');
-const avatarMessage = document.getElementById('avatar-message');
-const profileAvatar = document.getElementById('profile-avatar');
-
-// Splash -> Login
+// Splash -> login
 splashLogo.addEventListener('click', () => {
   splash.classList.remove('active');
   loginScreen.classList.add('active');
@@ -42,7 +33,7 @@ splashLogo.addEventListener('click', () => {
   errorMsg.style.color = '#f88';
 });
 
-// Вход
+// Login submit
 loginForm.addEventListener('submit', (e) => {
   e.preventDefault();
 
@@ -55,14 +46,14 @@ loginForm.addEventListener('submit', (e) => {
   auth.signInWithEmailAndPassword(email, password)
     .then(() => {
       loginForm.reset();
-      // переключение будет в onAuthStateChanged
+      // экран переключится в onAuthStateChanged
     })
     .catch(error => {
       errorMsg.textContent = error.message;
     });
 });
 
-// Регистрация
+// Register button
 document.getElementById('register-btn').addEventListener('click', () => {
   errorMsg.textContent = '';
   errorMsg.style.color = '#f88';
@@ -90,7 +81,7 @@ document.getElementById('register-btn').addEventListener('click', () => {
     });
 });
 
-// Выход
+// Logout
 logoutBtn.addEventListener('click', () => {
   auth.signOut().then(() => {
     main.classList.remove('active');
@@ -98,7 +89,7 @@ logoutBtn.addEventListener('click', () => {
   });
 });
 
-// Смена ника
+// Change nickname
 changeNicknameBtn.addEventListener('click', () => {
   profileMessage.textContent = '';
   const newNick = newNicknameInput.value.trim();
@@ -113,7 +104,7 @@ changeNicknameBtn.addEventListener('click', () => {
     user.updateProfile({ displayName: newNick })
       .then(() => {
         profileMessage.textContent = 'Ник успешно обновлён!';
-        profileInfo.textContent = `Ник: ${user.displayName || 'Без ника'}, Email: ${user.email}`;
+        nickSpan.textContent = newNick;
         newNicknameInput.value = '';
       })
       .catch(error => {
@@ -122,61 +113,46 @@ changeNicknameBtn.addEventListener('click', () => {
   }
 });
 
-// Навигация вкладок
-tabButtons.forEach((btn, idx) => {
+// Tabs navigation — показываем только активный таб
+tabButtons.forEach(btn => {
   btn.addEventListener('click', () => {
-    setActiveTab(idx);
+    const targetId = btn.getAttribute('data-index');
+
+    tabButtons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    tabs.forEach(tab => {
+      if (tab.id === targetId) {
+        tab.classList.add('active');
+      } else {
+        tab.classList.remove('active');
+      }
+    });
   });
 });
 
-function setActiveTab(index) {
-  tabsWrapper.style.transform = `translateX(-${index * (100 / 3)}%)`;
-  tabButtons.forEach((btn, i) => {
-    btn.classList.toggle('active', i === index);
-  });
-}
-
-// Загрузка аватара
-avatarUploadInput.addEventListener('change', async (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-
-  avatarMessage.textContent = 'Загрузка...';
-
-  try {
-    const user = auth.currentUser;
-    if (!user) throw new Error('Пользователь не авторизован');
-
-    const storageRef = storage.ref();
-    const avatarRef = storageRef.child(`avatars/${user.uid}/${file.name}`);
-
-    await avatarRef.put(file);
-    const photoURL = await avatarRef.getDownloadURL();
-
-    await user.updateProfile({ photoURL });
-
-    profileAvatar.src = photoURL;
-    avatarMessage.textContent = 'Аватар успешно обновлён!';
-  } catch (err) {
-    avatarMessage.textContent = 'Ошибка: ' + err.message;
-  }
-});
-
-// Отслеживание авторизации
+// Auth state observer
 auth.onAuthStateChanged(user => {
   if (user) {
     splash.classList.remove('active');
     loginScreen.classList.remove('active');
     main.classList.add('active');
 
-    profileInfo.textContent = `Ник: ${user.displayName || 'Без ника'}, Email: ${user.email}`;
-    profileAvatar.src = user.photoURL || 'default-avatar.png';
+    nickSpan.textContent = user.displayName || 'Без ника';
+    emailSpan.textContent = user.email;
+
+    if (user.photoURL) {
+      profileAvatar.src = user.photoURL;
+    } else {
+      profileAvatar.src = 'default-avatar.png'; // Укажи путь к своему дефолтному аватару
+    }
   } else {
     splash.classList.add('active');
     loginScreen.classList.remove('active');
     main.classList.remove('active');
 
-    profileInfo.textContent = 'Загрузка...';
+    nickSpan.textContent = 'Загрузка...';
+    emailSpan.textContent = 'Загрузка...';
     profileAvatar.src = 'default-avatar.png';
   }
 });
