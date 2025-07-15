@@ -8,15 +8,13 @@
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
 </head>
 <body>
   <div id="app-container">
 
     <!-- Splash screen -->
     <div id="splash" class="screen active">
-      <div class="logo" id="splash-logo" tabindex="0">T</div>
+     <div class="logo" id="splash-logo" tabindex="0">T</div>
     </div>
 
     <!-- Login/Register screen -->
@@ -46,15 +44,8 @@
       </div>
 
       <div id="tabs-wrapper">
-        <!-- Профиль -->
         <section class="tab" id="profile">
           <h1>Профиль</h1>
-
-          <!-- Аватар и загрузчик -->
-          <img id="avatar-img" src="default-avatar.png" alt="Аватар" width="120" height="120"
-               style="border-radius:50%; object-fit:cover; margin-bottom:10px;" />
-          <input type="file" id="avatar-input" accept="image/*" />
-
           <p id="profile-info">Загрузка...</p>
 
           <div id="nickname-change">
@@ -66,28 +57,14 @@
           <p id="profile-message" class="info"></p>
         </section>
 
-        <!-- Чаты -->
         <section class="tab" id="chats">
           <h1>Чаты</h1>
-          <div id="users-list" style="overflow-y:auto; max-height:300px; border: 1px solid #444; border-radius: 8px; padding: 10px;">
-          </div>
+          <p>Здесь будут ваши сообщения.</p>
         </section>
 
-        <!-- Группы -->
         <section class="tab" id="groups">
           <h1>Группы</h1>
           <p>Здесь будут групповые чаты.</p>
-        </section>
-
-        <!-- Окно активного чата -->
-        <section class="tab" id="chat-window" style="display:none; flex-direction: column; height: 100%;">
-          <button id="back-to-chats" style="margin-bottom:10px;">← Назад к списку чатов</button>
-          <h2 id="chat-with-name">Чат</h2>
-          <div id="messages" style="flex:1; overflow-y:auto; background:#222; padding:10px; border-radius:8px; margin-bottom:10px; color:#eee;"></div>
-          <form id="message-form" style="display:flex; gap:10px;">
-            <input id="message-input" type="text" placeholder="Введите сообщение..." style="flex:1; padding:10px; border-radius:5px; border:none;" autocomplete="off" />
-            <button type="submit">Отправить</button>
-          </form>
         </section>
       </div>
     </div>
