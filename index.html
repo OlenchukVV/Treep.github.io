@@ -21,15 +21,18 @@
     <!-- Login/Register screen -->
     <div id="login" class="screen">
       <h1>Вход / Регистрация в Treep</h1>
+      
       <form id="login-form">
         <input type="text" id="nickname" placeholder="Ник (для регистрации)" autocomplete="off" />
         <input type="email" id="email" placeholder="Email" autocomplete="username" required />
         <input type="password" id="password" placeholder="Пароль" autocomplete="current-password" required minlength="6" />
+
         <div id="auth-buttons">
           <button type="submit" id="login-btn">Войти</button>
           <button type="button" id="register-btn">Зарегистрироваться</button>
         </div>
       </form>
+
       <p id="error-msg" class="error"></p>
     </div>
 
@@ -42,14 +45,11 @@
       </div>
 
       <div id="tabs-wrapper">
-        <!-- Профиль -->
         <section class="tab" id="profile">
-          <h1>Профиль</h1>
-
           <div id="profile-avatar-container">
-            <img id="profile-avatar" src="default-avatar.png" alt="Аватар" width="120" height="120" style="border-radius: 50%; object-fit: cover;" />
-            <input type="file" id="avatar-upload" accept="image/*" style="margin-top: 10px;" />
-            <p id="avatar-message" class="info"></p>
+            <img id="profile-avatar" src="default-avatar.png" alt="Аватар" tabindex="0" />
+            <input type="file" id="avatar-upload" accept="image/*" title="Сменить аватар" />
+            <p id="avatar-message"></p>
           </div>
 
           <p id="profile-info">Загрузка...</p>
@@ -63,13 +63,11 @@
           <p id="profile-message" class="info"></p>
         </section>
 
-        <!-- Чаты -->
         <section class="tab" id="chats">
           <h1>Чаты</h1>
           <p>Здесь будут ваши сообщения.</p>
         </section>
 
-        <!-- Группы -->
         <section class="tab" id="groups">
           <h1>Группы</h1>
           <p>Здесь будут групповые чаты.</p>
