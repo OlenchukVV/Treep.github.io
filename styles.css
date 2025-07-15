@@ -208,3 +208,64 @@ body, html {
 #logout-btn:hover {
   background-color: #d55;
 }
+.chat-users {
+  border: 1px solid #333;
+  padding: 10px;
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+
+.chat-user {
+  padding: 8px;
+  background-color: #222;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.chat-user:hover {
+  background-color: #333;
+}
+
+.chat-window {
+  border-top: 1px solid #444;
+  padding-top: 10px;
+}
+
+.hidden {
+  display: none;
+}
+
+#chat-messages {
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+  background: #1e1e1e;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+#chat-form {
+  display: flex;
+  gap: 10px;
+}
+
+#chat-form input {
+  flex: 1;
+  padding: 8px;
+  background: #222;
+  border: none;
+  border-radius: 5px;
+  color: #eee;
+}
+
+#chat-form button {
+  padding: 8px 15px;
+  background: #444;
+  border: none;
+  border-radius: 5px;
+  color: #eee;
+  cursor: pointer;
+}
+
