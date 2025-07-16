@@ -1,5 +1,6 @@
 // Firebase config и инициализация auth — предположим, что это есть в firebase.js
 // const auth = firebase.auth();
+// const db = firebase.firestore();
 
 // DOM элементы
 const splash = document.getElementById('splash');
@@ -25,6 +26,17 @@ const logoutBtn = document.getElementById('logout-btn');
 const tabButtons = document.querySelectorAll('#top-buttons .tab-btn');
 const tabs = document.querySelectorAll('.tab');
 
+const userList = document.getElementById("user-list");
+const chatWindow = document.getElementById("chat-window");
+const chatMessages = document.getElementById("chat-messages");
+const chatForm = document.getElementById("chat-form");
+const chatInput = document.getElementById("chat-input");
+const chatHeader = document.getElementById("chat-header");
+
+let currentUser = null;
+let currentChatUser = null;
+let unsubscribeMessages = null;
+
 // Splash -> login
 splashLogo.addEventListener('click', () => {
   splash.classList.remove('active');
@@ -46,7 +58,6 @@ loginForm.addEventListener('submit', (e) => {
   auth.signInWithEmailAndPassword(email, password)
     .then(() => {
       loginForm.reset();
-      // экран переключится в onAuthStateChanged
     })
     .catch(error => {
       errorMsg.textContent = error.message;
@@ -68,23 +79,22 @@ document.getElementById('register-btn').addEventListener('click', () => {
   }
 
   auth.createUserWithEmailAndPassword(email, password)
-  .then(userCredential => {
-    return userCredential.user.updateProfile({ displayName: nickname }).then(() => {
-      // Сохраним данные пользователя в коллекции "users"
-      return firebase.firestore().collection("users").doc(userCredential.user.uid).set({
-        nickname,
-        email
+    .then(userCredential => {
+      return userCredential.user.updateProfile({ displayName: nickname }).then(() => {
+        return firebase.firestore().collection("users").doc(userCredential.user.uid).set({
+          nickname,
+          email
+        });
       });
+    })
+    .then(() => {
+      errorMsg.style.color = '#8f8';
+      errorMsg.textContent = 'Регистрация успешна! Теперь войдите.';
+      loginForm.reset();
+    })
+    .catch(error => {
+      errorMsg.textContent = error.message;
     });
-  })
-  .then(() => {
-    errorMsg.style.color = '#8f8';
-    errorMsg.textContent = 'Регистрация успешна! Теперь войдите.';
-    loginForm.reset();
-  })
-  .catch(error => {
-    errorMsg.textContent = error.message;
-  });
 });
 
 // Logout
@@ -109,6 +119,12 @@ changeNicknameBtn.addEventListener('click', () => {
   if (user) {
     user.updateProfile({ displayName: newNick })
       .then(() => {
+        // Обновим в Firestore
+        return firebase.firestore().collection("users").doc(user.uid).update({
+          nickname: newNick
+        });
+      })
+      .then(() => {
         profileMessage.textContent = 'Ник успешно обновлён!';
         nickSpan.textContent = newNick;
         newNicknameInput.value = '';
@@ -119,14 +135,12 @@ changeNicknameBtn.addEventListener('click', () => {
   }
 });
 
-// Tabs navigation — показываем только активный таб
+// Tabs navigation
 tabButtons.forEach(btn => {
   btn.addEventListener('click', () => {
     const targetId = btn.getAttribute('data-index');
-
     tabButtons.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-
     tabs.forEach(tab => {
       if (tab.id === targetId) {
         tab.classList.add('active');
@@ -140,6 +154,18 @@ tabButtons.forEach(btn => {
 // Auth state observer
 auth.onAuthStateChanged(user => {
   if (user) {
+    currentUser = user;
+
+    // Проверяем есть ли пользователь в Firestore, если нет - добавляем
+    firebase.firestore().collection("users").doc(user.uid).get().then(doc => {
+      if (!doc.exists) {
+        return firebase.firestore().collection("users").doc(user.uid).set({
+          nickname: user.displayName || "Без ника",
+          email: user.email
+        });
+      }
+    });
+
     splash.classList.remove('active');
     loginScreen.classList.remove('active');
     main.classList.add('active');
@@ -150,8 +176,11 @@ auth.onAuthStateChanged(user => {
     if (user.photoURL) {
       profileAvatar.src = user.photoURL;
     } else {
-      profileAvatar.src = 'default-avatar.png'; // Укажи путь к своему дефолтному аватару
+      profileAvatar.src = 'default-avatar.png';
     }
+
+    loadUsers();
+
   } else {
     splash.classList.add('active');
     loginScreen.classList.remove('active');
@@ -162,24 +191,8 @@ auth.onAuthStateChanged(user => {
     profileAvatar.src = 'default-avatar.png';
   }
 });
-const userList = document.getElementById("user-list");
-const chatWindow = document.getElementById("chat-window");
-const chatMessages = document.getElementById("chat-messages");
-const chatForm = document.getElementById("chat-form");
-const chatInput = document.getElementById("chat-input");
-const chatHeader = document.getElementById("chat-header");
 
-let currentUser = null;
-let currentChatUser = null;
-let unsubscribeMessages = null;
-
-auth.onAuthStateChanged(user => {
-  if (user) {
-    currentUser = user;
-    loadUsers();
-  }
-});
-
+// Load users for chat
 function loadUsers() {
   firebase.firestore().collection("users").onSnapshot(snapshot => {
     userList.innerHTML = "";
@@ -196,6 +209,7 @@ function loadUsers() {
   });
 }
 
+// Chat functions
 function getChatId(user1, user2) {
   return [user1, user2].sort().join("_");
 }
@@ -243,4 +257,3 @@ chatForm.addEventListener("submit", (e) => {
 
   chatInput.value = "";
 });
-
